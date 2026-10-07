@@ -2,6 +2,7 @@
 # Calculator Config    #
 ########################
 
+# Manages calculator configuration settings for Module 5
 from dataclasses import dataclass
 from decimal import Decimal
 from numbers import Number
