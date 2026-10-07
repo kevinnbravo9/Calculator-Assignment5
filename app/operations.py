@@ -2,6 +2,7 @@
 # Operation Classes    #
 ########################
 
+# Defines calculator operations for Module 5
 from abc import ABC, abstractmethod
 from decimal import Decimal
 from typing import Dict
