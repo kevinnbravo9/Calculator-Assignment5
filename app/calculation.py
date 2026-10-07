@@ -2,6 +2,7 @@
 # Calculation Model    #
 ########################
 
+# Handles individual calculation data for Module 5
 from dataclasses import dataclass, field
 import datetime
 from decimal import Decimal, InvalidOperation
