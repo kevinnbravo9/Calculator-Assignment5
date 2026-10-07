@@ -38,7 +38,7 @@ This project uses several design patterns:
 Clone the repository:
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/kevinnbravo9/Calculator-Assignment5.git
 ```
 
 Move into the project folder:
