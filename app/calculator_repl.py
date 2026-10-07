@@ -2,6 +2,7 @@
 # Calculator REPL       #
 ########################
 
+# Handles the calculator REPL interface for Module 5
 from decimal import Decimal
 import logging
 
