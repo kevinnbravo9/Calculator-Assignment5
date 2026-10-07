@@ -16,7 +16,7 @@ Key Features:
 7. Documentation: Educational comments
 8. Type Hints: Static type checking support
 
-Version: 1.0
+Version: 1.1
 """
 
 
