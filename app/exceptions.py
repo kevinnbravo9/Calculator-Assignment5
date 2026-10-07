@@ -2,6 +2,7 @@
 # Exception Hierarchy  #
 ########################
 
+# Defines custom exceptions for the Module 5 calculator
 class CalculatorError(Exception):
     """
     Base exception class for calculator-specific errors.
