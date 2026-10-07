@@ -2,6 +2,7 @@
 # Input Validation     #
 ########################
 
+# Handles input validation for the Module 5 calculator
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
 from typing import Any
