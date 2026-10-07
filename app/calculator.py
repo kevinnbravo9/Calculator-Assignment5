@@ -2,6 +2,7 @@
 # Calculator Class      #
 ########################
 
+# Main calculator logic for Module 5
 from decimal import Decimal
 import logging
 import os
