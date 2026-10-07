@@ -2,6 +2,7 @@
 # Calculator Memento    #
 ########################
 
+# Manages calculator state for undo and redo in Module 5
 from dataclasses import dataclass, field
 import datetime
 from typing import Any, Dict, List
