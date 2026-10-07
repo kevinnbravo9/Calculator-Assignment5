@@ -130,3 +130,18 @@ def test_from_dict_result_mismatch(caplog):
 
     # Assert
     assert "Loaded calculation result 10 differs from computed result 5" in caplog.text
+
+@pytest.mark.parametrize("operation,a,b,expected", [
+    ("Addition", "2", "3", "5"),
+    ("Subtraction", "5", "3", "2"),
+    ("Multiplication", "4", "2", "8"),
+    ("Division", "8", "2", "4"),
+    ("Power", "2", "3", "8"),
+])
+def test_calculations_parameterized(operation, a, b, expected):
+    calc = Calculation(
+        operation=operation,
+        operand1=Decimal(a),
+        operand2=Decimal(b)
+    )
+    assert calc.result == Decimal(expected)

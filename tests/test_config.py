@@ -144,3 +144,15 @@ def test_history_file_property():
     config = CalculatorConfig(base_dir=Path('/new_base_dir'))
     assert config.history_file == Path('/new_base_dir/history/calculator_history.csv').resolve()
 
+@pytest.mark.parametrize("value,expected", [
+    ("true", True),
+    ("false", False),
+    ("True", True),
+    ("False", False),
+])
+def test_auto_save_parameterized(monkeypatch, value, expected):
+    monkeypatch.setenv("CALCULATOR_AUTO_SAVE", value)
+
+    config = CalculatorConfig()
+
+    assert config.auto_save is expected

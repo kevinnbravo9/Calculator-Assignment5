@@ -225,3 +225,12 @@ class TestOperationFactory:
 
         with pytest.raises(TypeError, match="Operation class must inherit"):
             OperationFactory.register_operation("invalid", InvalidOperation)
+
+@pytest.mark.parametrize("operation,a,b,expected", [
+    (Addition(), Decimal("2"), Decimal("3"), Decimal("5")),
+    (Subtraction(), Decimal("5"), Decimal("3"), Decimal("2")),
+    (Multiplication(), Decimal("4"), Decimal("3"), Decimal("12")),
+    (Division(), Decimal("10"), Decimal("2"), Decimal("5")),
+])
+def test_operations_parameterized(operation, a, b, expected):
+    assert operation.execute(a, b) == expected
