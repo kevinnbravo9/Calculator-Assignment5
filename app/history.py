@@ -2,6 +2,7 @@
 # History Management    #
 ########################
 
+# Manages calculation history for Module 5
 from abc import ABC, abstractmethod
 import logging
 from typing import Any
