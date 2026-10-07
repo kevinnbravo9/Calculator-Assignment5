@@ -178,3 +178,310 @@ def test_calculator_repl_help(mock_print, mock_input):
 def test_calculator_repl_addition(mock_print, mock_input):
     calculator_repl()
     mock_print.assert_any_call("\nResult: 5")
+
+@patch('builtins.input', side_effect=['clear', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_clear(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("History cleared")
+
+
+@patch('builtins.input', side_effect=['undo', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_undo_empty(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Nothing to undo")
+
+
+@patch('builtins.input', side_effect=['redo', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_redo_empty(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Nothing to redo")
+
+
+@patch('builtins.input', side_effect=['save', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_save(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("History saved successfully")
+
+
+@patch('builtins.input', side_effect=['load', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_load(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("History loaded successfully")
+
+
+@patch('builtins.input', side_effect=['unknown', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_unknown_command(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call(
+        "Unknown command: 'unknown'. Type 'help' for available commands."
+    )
+
+
+@patch('builtins.input', side_effect=['add', 'cancel', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_cancel_first_number(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Operation cancelled")
+
+
+@patch('builtins.input', side_effect=['add', '5', 'cancel', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_cancel_second_number(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Operation cancelled")
+
+@patch('builtins.input', side_effect=['undo', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_undo_empty(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Nothing to undo")
+
+@patch('builtins.input', side_effect=['redo', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_redo_empty(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Nothing to redo")
+
+@patch('builtins.input', side_effect=['exit'])
+@patch('builtins.print')
+@patch('app.calculator.Calculator.save_history', side_effect=Exception("Save failed"))
+def test_calculator_repl_exit_save_error(mock_save, mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Warning: Could not save history: Save failed")
+
+@patch('builtins.input', side_effect=['add', '2', '3', 'history', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_history_with_calculation(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("\nCalculation History:")
+
+@patch('builtins.input', side_effect=['add', '2', '3', 'undo', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_undo_success(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Operation undone")
+
+@patch('builtins.input', side_effect=['add', '2', '3', 'undo', 'redo', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_redo_success(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Operation redone")
+
+@patch('builtins.input', side_effect=['help', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_help(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("\nAvailable commands:")
+
+@patch('builtins.input', side_effect=['clear', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_clear(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("History cleared")
+
+@patch('app.calculator.Calculator.save_history', side_effect=Exception("Save failed"))
+@patch('builtins.input', side_effect=['save', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_save_error(mock_print, mock_input, mock_save):
+    calculator_repl()
+    mock_print.assert_any_call("Error saving history: Save failed")
+
+@patch('app.calculator.Calculator.load_history', side_effect=Exception("Load failed"))
+@patch('builtins.input', side_effect=['load', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_load_error(mock_print, mock_input, mock_load):
+    calculator_repl()
+    mock_print.assert_any_call("Error loading history: Load failed")
+
+@patch('builtins.input', side_effect=['divide', '10', '0', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_divide_by_zero(mock_print, mock_input):
+    calculator_repl()
+    assert any(
+        "Error:" in str(call)
+        for call in mock_print.call_args_list
+    )
+
+@patch('builtins.input', side_effect=['add', '2', '3', 'exit'])
+@patch('builtins.print')
+@patch('app.calculator.Calculator.perform_operation', side_effect=Exception("Test error"))
+def test_calculator_repl_unexpected_calculation_error(mock_operation, mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Unexpected error: Test error")
+
+@patch('builtins.input', side_effect=['history', 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_empty_history(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("No calculations in history")
+
+@patch('builtins.input', side_effect=[KeyboardInterrupt, 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_keyboard_interrupt(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("\nOperation cancelled")
+
+@patch('builtins.input', side_effect=EOFError)
+@patch('builtins.print')
+def test_calculator_repl_eof_error(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("\nInput terminated. Exiting...")
+
+@patch('builtins.input', side_effect=[Exception("Test error"), 'exit'])
+@patch('builtins.print')
+def test_calculator_repl_general_error(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Error: Test error")
+
+@patch('app.calculator_repl.Calculator', side_effect=Exception("Initialization failed"))
+@patch('builtins.print')
+def test_calculator_repl_initialization_error(mock_print, mock_calculator):
+    with pytest.raises(Exception, match="Initialization failed"):
+        calculator_repl()
+
+    mock_print.assert_any_call("Fatal error: Initialization failed")
+
+def test_calculator_memento_to_dict():
+    from app.calculator_memento import CalculatorMemento
+
+    memento = CalculatorMemento(history=[])
+    data = memento.to_dict()
+
+    assert data["history"] == []
+    assert "timestamp" in data
+
+
+def test_calculator_memento_from_dict():
+    from app.calculator_memento import CalculatorMemento
+
+    memento = CalculatorMemento(history=[])
+    data = memento.to_dict()
+
+    restored = CalculatorMemento.from_dict(data)
+
+    assert restored.history == []
+    assert restored.timestamp == memento.timestamp
+
+def test_calculation_string_methods():
+    from decimal import Decimal
+    from app.calculation import Calculation
+
+    calc = Calculation("Addition", Decimal("2"), Decimal("3"))
+
+    # Cover __str__
+    text = str(calc)
+    assert "Addition" in text
+
+    # Cover __repr__
+    representation = repr(calc)
+    assert "Calculation" in representation
+
+    # Cover __eq__ with a non-Calculation object
+    assert calc.__eq__("not a calculation") is NotImplemented
+
+def test_calculation_arithmetic_error(monkeypatch):
+    from decimal import Decimal
+    from app.calculation import Calculation
+    from app.exceptions import OperationError
+    import pytest
+
+    calc = Calculation("Addition", Decimal("2"), Decimal("3"))
+
+    class BadDecimal(Decimal):
+        def __add__(self, other):
+            raise ArithmeticError("Test arithmetic error")
+
+    calc.operand1 = BadDecimal("2")
+
+    with pytest.raises(OperationError, match="Calculation failed"):
+        calc.calculate()
+
+def test_setup_logging_error(monkeypatch):
+    from app.calculator import Calculator
+    import pytest
+
+    def raise_error(*args, **kwargs):
+        raise Exception("Test logging error")
+
+    monkeypatch.setattr("logging.basicConfig", raise_error)
+
+    with pytest.raises(Exception, match="Test logging error"):
+        Calculator()
+
+def test_history_max_size():
+    from app.calculator import Calculator
+    from app.operations import Addition
+
+    calc = Calculator()
+    calc.config.max_history_size = 1
+
+    calc.set_operation(Addition())
+
+    calc.perform_operation("1", "2")
+    calc.perform_operation("3", "4")
+
+    assert len(calc.history) == 1
+
+def test_perform_operation_general_exception():
+    from app.calculator import Calculator
+    from app.exceptions import OperationError
+    import pytest
+
+    class BadOperation:
+        def execute(self, a, b):
+            raise Exception("Test operation failure")
+
+        def __str__(self):
+            return "BadOperation"
+
+    calc = Calculator()
+    calc.set_operation(BadOperation())
+
+    with pytest.raises(OperationError, match="Operation failed"):
+        calc.perform_operation("2", "3")
+
+def test_save_history_error(monkeypatch):
+    from app.calculator import Calculator
+    from app.exceptions import OperationError
+    import pytest
+
+    calc = Calculator()
+
+    def raise_error(*args, **kwargs):
+        raise Exception("Test save error")
+
+    monkeypatch.setattr("pandas.DataFrame.to_csv", raise_error)
+
+    with pytest.raises(OperationError, match="Failed to save history"):
+        calc.save_history()
+
+def test_load_history_error(monkeypatch):
+    from app.calculator import Calculator
+    from app.exceptions import OperationError
+    import pytest
+
+    calc = Calculator()
+
+    def raise_error(*args, **kwargs):
+        raise Exception("Test load error")
+
+    monkeypatch.setattr("pandas.read_csv", raise_error)
+
+    with pytest.raises(OperationError, match="Failed to load history"):
+        calc.load_history()
+
+def test_get_history_dataframe_empty():
+    from app.calculator import Calculator
+
+    calc = Calculator()
+    calc.history = []
+
+    df = calc.get_history_dataframe()
+
+    assert df.empty

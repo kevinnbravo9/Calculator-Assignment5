@@ -321,17 +321,8 @@ class Calculator:
         Returns:
             pd.DataFrame: DataFrame containing the calculation history.
         """
-        history_data = []
-        for calc in self.history:
-            history_data.append({
-                'operation': str(calc.operation),
-                'operand1': str(calc.operand1),
-                'operand2': str(calc.operand2),
-                'result': str(calc.result),
-                'timestamp': calc.timestamp
-            })
-        return pd.DataFrame(history_data)
-
+        return pd.DataFrame([calc.to_dict() for calc in self.history])
+    
     def show_history(self) -> List[str]:
         """
         Get formatted history of calculations.
